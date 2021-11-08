@@ -13,7 +13,7 @@ type Command struct {
         Args []string `json:"args"`;
 }
 
-func (c *Command)print_cmd() {
+func (c *Command)PrintCmd() {
         data := fmt.Sprintf("Name: %s | Args: %s", c.Name, strings.Join(c.Args[:], ","))
         fmt.Printf("%s", data)
 }

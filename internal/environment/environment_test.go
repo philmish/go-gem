@@ -6,7 +6,7 @@ import (
 )
 
 func TestCommand(t *testing.T) {
-        newCmd := Command{"echo",[]string{"Hello World"},}
-        newCmd.print_cmd()
+        newCmd := environment.Command{"echo",[]string{"Hello World"},}
+        newCmd.PrintCmd()
         newCmd.Execute()
 }
