@@ -15,7 +15,7 @@ type Command struct {
 
 func (c *Command)PrintCmd() {
         data := fmt.Sprintf("Name: %s | Args: %s", c.Name, strings.Join(c.Args[:], ","))
-        fmt.Printf("%s", data)
+        fmt.Println(data)
 }
 
 func (c *Command)Execute() error {
@@ -25,12 +25,26 @@ func (c *Command)Execute() error {
         return cmd.Run()
 }
 
+func (c *Command)updateArgs(newArgs []string) {
+        c.Args = newArgs
+}
+
 type Environment struct {
         WorkDir string;
         SetupCmds map[string]Command `json:"setupcmds"`;
         BuildCmds map[string]Command `json:"buildcmds"`;
         RunCmds map[string]Command `json:"runcmds"`;
         TestCmds map[string]Command `json:"testcmds"`;
+}
+
+func NewEnv(dir string) *Environment {
+        return &Environment{
+                dir,
+                make(map[string]Command),
+                make(map[string]Command),
+                make(map[string]Command),
+                make(map[string]Command),
+        }
 }
 
 func (e *Environment)getCmds(name string) map[string]Command {
@@ -75,7 +89,7 @@ func (e *Environment)List(module string) {
         cmds := e.getCmds(module)
         for name, i := range cmds {
                 fmt.Printf("Command Alias: %s\n", name)
-                i.print_cmd()
+                i.PrintCmd()
                 fmt.Println("")
         }
 }

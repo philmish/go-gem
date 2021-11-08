@@ -10,3 +10,12 @@ func TestCommand(t *testing.T) {
         newCmd.PrintCmd()
         newCmd.Execute()
 }
+
+func TestEnvironment(t *testing.T) {
+        var newEnv = environment.NewEnv("/foo/bar")
+        newEnv.Add("Setup", "hello", "echo", []string{"Hello World"})
+        newEnv.List("Setup")
+        newEnv.Do("Setup", "hello")
+        newEnv.Remove("Setup", "hello")
+        newEnv.List("Setup")
+}
