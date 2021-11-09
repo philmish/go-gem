@@ -24,10 +24,12 @@ func parseEnvCommand(u *UserInput) {
                         env.Do(u.Name, u.AddArgs)
                 case "add":
                         env.Add(u.Name, u.Arg, u.AddArgs)
+                        project.ToFile(env.WorkDir)
                 case "ls":
                         env.List()
                 case "rm":
                         env.Remove(u.Name)
+                        project.ToFile(env.WorkDir)
                 }
         } else {
                 log.Fatal("Failed to get current working directory")
@@ -42,6 +44,8 @@ func (u *UserInput)Parse(){
                 switch u.Cmd {
                 case "help":
                         helpCmd()
+                case "init":
+                        initParser(u)
                 default:
                         fmt.Printf("Unknown command: %s", u.Cmd)
                 }

@@ -6,8 +6,7 @@ import (
 
 func DefaultGoenv(workdir string) *environment.Environment {
         var nEnv = environment.NewEnv(workdir)
+        nEnv.Add("test_all", "go", []string{"test", "-v", "./..."})
 
-        nEnv.Add("test_all", "go test -v", []string{"./..."})
-        
         return nEnv
 }

@@ -1,0 +1,38 @@
+package cli
+
+import (
+        "os"
+        "log"
+        "github.com/philmish/go-gem/internal/config"
+        "github.com/philmish/go-gem/internal/environment"
+)
+
+
+func newProject(name string, e *environment.Environment)*config.Project {
+        newPr := config.NewProject()
+        newPr.Name = name
+        newPr.Env = *e
+        return newPr
+
+}
+
+func EmptyDefault(name string) {
+
+        if p, err := os.Getwd(); err == nil {
+                newEnv := environment.NewEnv(p)
+                np := newProject(name, newEnv)
+                np.ToFile(p)
+                log.Printf("%s created successfully.", name)
+        } else {
+                log.Fatal("Something went wrong when trying to read current working directory.")
+        }
+}
+
+func initParser(i *UserInput) {
+        switch i.Name {
+        case "empty":
+                EmptyDefault(i.Arg)
+        default:
+                EmptyDefault("default")
+        }
+}
