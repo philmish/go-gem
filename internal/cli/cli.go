@@ -6,7 +6,7 @@ import (
 
 type UserInput struct {
         Cmd string
-        Module string
+        Name string
         Arg string
         AddArgs []string
 }
@@ -14,16 +14,16 @@ type UserInput struct {
 func GetInput() *UserInput{
         var (
                 cmd string
-                module string
+                name string
                 arg string
         )
 
-        flag.StringVar(&cmd, "cmd", "help", "gem command you want to run.")
-        flag.StringVar(&module, "mod", "", "gem module to use for parsing the args.")
-        flag.StringVar(&arg, "arg", "", "arg for the module")
+        flag.StringVar(&cmd, "c", "help", "gem command you want to run.")
+        flag.StringVar(&name, "n", "", "gem module to use for parsing the args.")
+        flag.StringVar(&arg, "a", "", "argument passed to the gem command.")
         flag.Parse()
 
-        var data = &UserInput{cmd, module, arg, flag.Args()}
+        var data = &UserInput{cmd, name, arg, flag.Args()}
         return data
 }
 

@@ -7,26 +7,43 @@ import (
         "github.com/philmish/go-gem/internal/config"
 )
 
-type gemCmd struct {
-        mod string
-        arg string
-        addargs []string
+var envCommands = map[string]bool{
+        "do": true,
+        "add": true,
+        "ls": true,
+        "rm": true,
+}
+
+func parseEnvCommand(u *UserInput) {
+        if p, err := os.Getwd(); err == nil {
+                project := config.FromFile(p)
+                var env = project.Env
+
+                switch u.Cmd {
+                case "do":
+                        env.Do(u.Name, u.AddArgs)
+                case "add":
+                        env.Add(u.Name, u.Arg, u.AddArgs)
+                case "ls":
+                        env.List()
+                case "rm":
+                        env.Remove(u.Name)
+                }
+        } else {
+                log.Fatal("Failed to get current working directory")
+        }
 }
 
 func (u *UserInput)Parse(){
+        if ok, _ := envCommands[u.Cmd]; ok {
+                parseEnvCommand(u)
 
-        switch u.Cmd {
-        case "do":
-                var cmd = &gemCmd{u.Module, u.Arg, u.AddArgs}
-                if p, err := os.Getwd(); err == nil {
-                        project := config.FromFile(p)
-                        NewShell(cmd, project)
-                } else {
-                        log.Fatalf("Failed to load current working directory.")
+        } else {
+                switch u.Cmd {
+                case "help":
+                        helpCmd()
+                default:
+                        fmt.Printf("Unknown command: %s", u.Cmd)
                 }
-        case "help":
-                helpCmd()
-        default:
-                fmt.Printf("Unknown command: %s", u.Cmd)
         }
 }
