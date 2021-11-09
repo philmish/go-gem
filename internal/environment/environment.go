@@ -30,73 +30,46 @@ func (c *Command)updateArgs(newArgs []string) {
 }
 
 type Environment struct {
-        WorkDir string;
-        SetupCmds map[string]Command `json:"setupcmds"`;
-        BuildCmds map[string]Command `json:"buildcmds"`;
-        RunCmds map[string]Command `json:"runcmds"`;
-        TestCmds map[string]Command `json:"testcmds"`;
+        WorkDir string `json:"workdir"`
+        Cmds map[string]Command `json:"cmds"`
 }
 
 func NewEnv(dir string) *Environment {
         return &Environment{
                 dir,
                 make(map[string]Command),
-                make(map[string]Command),
-                make(map[string]Command),
-                make(map[string]Command),
         }
 }
 
-func (e *Environment)getCmds(name string) map[string]Command {
-        var cmds map[string]Command
-        switch name {
-        case "Setup":
-                cmds = e.SetupCmds
-        case "Build":
-                cmds = e.BuildCmds
-        case "Run":
-                cmds = e.RunCmds
-        case "Test":
-                cmds = e.TestCmds
-        default:
-                log.Fatalf("%s is not a known command collection.", name)
-        }
-        return cmds
-}
-
-func (e *Environment)Add(module, name, cmd string, args []string){
-        cmds := e.getCmds(module)
-        if _, exists := cmds[name]; exists {
+func (e *Environment)Add(name, cmd string, args []string){
+        if _, exists := e.Cmds[name]; exists {
                 log.Fatalf("%s already is a registered command.", name)
         } else {
                 newCmd := Command{cmd, args}
-                cmds[name] = newCmd
-                fmt.Printf("%s was added to %s", name, module)
+                e.Cmds[name] = newCmd
+                fmt.Printf("%s was added.", name)
         }
 }
 
-func (e *Environment)Remove(module, name string) {
-        cmds := e.getCmds(module)
-        if _, exists := cmds[name]; exists {
-                delete(cmds, name)
-                fmt.Printf("%s removed from %s", name, module)
+func (e *Environment)Remove(name string) {
+        if _, exists := e.Cmds[name]; exists {
+                delete(e.Cmds, name)
+                fmt.Printf("%s was removed.", name)
         } else {
-                log.Fatalf("%s is not a command in %s", name, module)
+                log.Fatalf("%s is not a command.", name)
         }
 }
 
-func (e *Environment)List(module string) {
-        cmds := e.getCmds(module)
-        for name, i := range cmds {
+func (e *Environment)List() {
+        for name, i := range e.Cmds {
                 fmt.Printf("Command Alias: %s\n", name)
                 i.PrintCmd()
                 fmt.Println("")
         }
 }
 
-func (e *Environment)Do(module, cmd string, addargs []string) {
-        cmds := e.getCmds(module)
-        if command, ok := cmds[cmd]; ok {
+func (e *Environment)Do(name string, addargs []string) {
+        if command, ok := e.Cmds[name]; ok {
                 for _, i := range addargs {
                         command.Args = append(command.Args, i)
                 }
@@ -106,14 +79,7 @@ func (e *Environment)Do(module, cmd string, addargs []string) {
                         log.Fatalf("Execution of command: %s\n produced following error:\n%s", command, err.Error())
                 }
         } else {
-                log.Fatalf("%s is not a registered command.", cmd)
+                log.Fatalf("%s is not a registered command.", name)
         }
-}
-
-type Setup interface {
-        Add()
-        Remove()
-        List()
-        Do()
 }
 

@@ -21,9 +21,9 @@ func TestProject(t *testing.T){
         project.Todos = append(project.Todos, "Test todo")
         
         var env = project.Env
-        env.Add("Setup", "hello", "echo", []string{"Hello World"})
-        env.List("Setup")
-        env.Do("Setup", "hello", []string{"with", "args"})
+        env.Add("hello", "echo", []string{"Hello World"})
+        env.List()
+        env.Do("hello", []string{"with", "args"})
 
         err = project.ToFile(p)
 
