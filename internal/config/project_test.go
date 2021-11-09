@@ -23,7 +23,7 @@ func TestProject(t *testing.T){
         var env = project.Env
         env.Add("Setup", "hello", "echo", []string{"Hello World"})
         env.List("Setup")
-        env.Do("Setup", "hello")
+        env.Do("Setup", "hello", []string{"with", "args"})
 
         err = project.ToFile(p)
 

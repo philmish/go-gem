@@ -94,9 +94,12 @@ func (e *Environment)List(module string) {
         }
 }
 
-func (e *Environment)Do(module, cmd string) {
+func (e *Environment)Do(module, cmd string, addargs []string) {
         cmds := e.getCmds(module)
         if command, ok := cmds[cmd]; ok {
+                for _, i := range addargs {
+                        command.Args = append(command.Args, i)
+                }
                 err := command.Execute()
 
                 if err != nil {

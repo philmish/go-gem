@@ -16,7 +16,7 @@ type gemCmd struct {
 func (u *UserInput)Parse(){
 
         switch u.Cmd {
-        case "shell":
+        case "do":
                 var cmd = &gemCmd{u.Module, u.Arg, u.AddArgs}
                 if p, err := os.Getwd(); err == nil {
                         project := config.FromFile(p)
