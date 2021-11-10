@@ -1,17 +1,17 @@
 package templates
 
 import (
-        "github.com/philmish/go-gem/internal/environment"
-        "fmt"
+	"fmt"
+	"github.com/philmish/go-gem/internal/environment"
 )
 
-func DefaultPyenv(workdir string) *environment.Environment{
-        var nEnv = environment.NewEnv(workdir)
-        var envPath = fmt.Sprintf("%s/venv/bin/activate", workdir)
+func DefaultPyenv(workdir string) *environment.Environment {
+	var nEnv = environment.NewEnv(workdir)
+	var envPath = fmt.Sprintf("%s/venv/bin/activate", workdir)
 
-        nEnv.Add("env", "source", []string{envPath})
-        nEnv.Add("reqs", "pip", []string{"install", "-r", "requirements.txt"})
-        nEnv.Add("get", "pip", []string{"install", "-U"})
+	nEnv.Add("env", "source", []string{envPath})
+	nEnv.Add("reqs", "pip", []string{"install", "-r", "requirements.txt"})
+	nEnv.Add("get", "pip", []string{"install", "-U"})
 
-        return nEnv
+	return nEnv
 }
