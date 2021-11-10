@@ -18,6 +18,10 @@ func (c *Command)PrintCmd() {
         fmt.Println(data)
 }
 
+func (c *Command)alias(name string) string {
+        return fmt.Sprintf("alias %s=\"%s %s\"", name, c.Name, strings.Join(c.Args[:], " "))
+}
+
 func (c *Command)Execute() error {
         cmd := exec.Command(c.Name, c.Args...)
         cmd.Stdout = os.Stdout
@@ -32,12 +36,14 @@ func (c *Command)updateArgs(newArgs []string) {
 type Environment struct {
         WorkDir string `json:"workdir"`
         Cmds map[string]Command `json:"cmds"`
+        Alias bool `json:"alias"`
 }
 
 func NewEnv(dir string) *Environment {
         return &Environment{
                 dir,
                 make(map[string]Command),
+                false,
         }
 }
 
@@ -83,3 +89,13 @@ func (e *Environment)Do(name string, addargs []string) {
         }
 }
 
+func (e *Environment)Aliases() error {
+        var aliases []string
+        for k,v := range e.Cmds {
+                aliases = append(aliases, v.alias(k))
+        }
+        inp := strings.Join(aliases[:], "\n")
+        data := []byte(inp)
+        fpath := fmt.Sprintf("%s/.gem_aliases", e.WorkDir)
+        return os.WriteFile(fpath, data, 0644)
+}

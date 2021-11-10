@@ -16,7 +16,7 @@ func newProject(name string, e *environment.Environment)*config.Project {
 
 }
 
-func EmptyDefault(name string) {
+func EmptyDefault(name string, aliasing bool) {
 
         if p, err := os.Getwd(); err == nil {
                 newEnv := environment.NewEnv(p)
@@ -31,8 +31,8 @@ func EmptyDefault(name string) {
 func initParser(i *UserInput) {
         switch i.Name {
         case "empty":
-                EmptyDefault(i.Arg)
+                EmptyDefault(i.Arg, i.Alias)
         default:
-                EmptyDefault("default")
+                EmptyDefault("default", i.Alias)
         }
 }
