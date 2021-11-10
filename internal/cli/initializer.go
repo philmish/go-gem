@@ -20,6 +20,7 @@ func EmptyDefault(name string, aliasing bool) {
 
         if p, err := os.Getwd(); err == nil {
                 newEnv := environment.NewEnv(p)
+                newEnv.Alias = aliasing
                 np := newProject(name, newEnv)
                 np.ToFile(p)
                 log.Printf("%s created successfully.", name)

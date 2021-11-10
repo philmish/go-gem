@@ -57,11 +57,16 @@ func FromFile(fpath string) *Project {
 func (p *Project)ToFile(fpath string) error {
         fp := filepath.Join(fpath, "gem_config.json")
         file, err := json.MarshalIndent(p, "", " ")
-
         if err != nil{
                 return err
         }
 
+        if p.Env.Alias {
+                err = p.Env.Aliases()
+                if err != nil{
+                        return err
+                }
+        }
         err = ioutil.WriteFile(fp, file, 0644)
         return err
 }

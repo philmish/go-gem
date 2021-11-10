@@ -14,7 +14,7 @@ type Command struct {
 }
 
 func (c *Command)PrintCmd() {
-        data := fmt.Sprintf("Name: %s | Args: %s", c.Name, strings.Join(c.Args[:], ","))
+        data := fmt.Sprintf("Command: %s | Args: %s", c.Name, strings.Join(c.Args[:], ","))
         fmt.Println(data)
 }
 
