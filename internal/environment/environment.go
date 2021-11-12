@@ -53,7 +53,7 @@ func (e *Environment) Add(name, cmd string, args []string) {
 	} else {
 		newCmd := Command{cmd, args}
 		e.Cmds[name] = newCmd
-		fmt.Printf("%s was added.", name)
+		fmt.Printf("%s was added.\n", name)
 	}
 }
 
