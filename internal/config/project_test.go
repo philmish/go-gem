@@ -7,6 +7,12 @@ import (
 	"testing"
 )
 
+func checkErr(err error, t *testing.T) {
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+}
+
 func TestProject(t *testing.T) {
 	p, err := os.Getwd()
 
@@ -18,7 +24,12 @@ func TestProject(t *testing.T) {
 	project := config.NewProject()
 	project.Name = "TestProject"
 	project.Env.WorkDir = p
-	project.Todos = append(project.Todos, "Test todo")
+	project.AddTodo("Project Test Todo", 5)
+    project.DelTodo(1)
+
+    if ! project.Todos[0].Done{
+            t.Error("Tried to delete todo but failed.")
+    }
 
 	var env = project.Env
 	env.Add("hello", "echo", []string{"Hello World"})
@@ -34,4 +45,17 @@ func TestProject(t *testing.T) {
 	loadedConf := config.FromFile(p)
 
 	fmt.Println(loadedConf.Name)
+}
+
+func TestTodo(t *testing.T) {
+	project := config.NewProject()
+	project.Name = "TestProject"
+	err := project.AddTodo("Test the todo function", 10)
+	checkErr(err, t)
+	todos := project.ListTodos()
+	fmt.Printf(todos)
+	err = project.ChangeUrgency(1, 12)
+	checkErr(err, t)
+	err = project.DelTodo(1)
+	checkErr(err, t)
 }

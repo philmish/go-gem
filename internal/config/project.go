@@ -2,16 +2,34 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/philmish/go-gem/internal/environment"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 )
+
+type Todo struct {
+	Content string `json:"content"`
+	Done    bool   `json:"done"`
+	Urgency int8   `json:"urgency"`
+	Id      int    `json:"id"`
+}
+
+func newTodo(content string, urgency int8, id int) *Todo {
+	return &Todo{content, false, urgency, id}
+}
+
+func (t *Todo) formatTodo() string {
+        return fmt.Sprintf("(%d)%s\nID: %d\n\n", t.Urgency, t.Content, t.Id)
+}
 
 type Project struct {
 	Name  string                  `json:"name"`
-	Todos []string                `json:"todos"`
+	Todos []Todo                  `json:"todos"`
 	Env   environment.Environment `json:"env"`
 }
 
@@ -19,9 +37,67 @@ func NewProject() *Project {
 	var env = environment.NewEnv("")
 	return &Project{
 		"",
-		[]string{},
+		[]Todo{},
 		*env,
 	}
+}
+
+func (p *Project) checkTodoId(id int) (int, error) {
+	for i, item := range p.Todos {
+		if item.Id == id {
+			return i, nil
+		}
+	}
+	return 0, errors.New("No todo found for id") 
+}
+
+func (p *Project) checkForTodoContent(content string) *Todo {
+	for _, i := range p.Todos {
+		if i.Content == content {
+			return &i
+		}
+	}
+	return nil
+}
+
+func (p *Project) AddTodo(content string, urgency int8) error {
+	exists := p.checkForTodoContent(content)
+	if exists != nil {
+		return errors.New("A todo with the same content already exists.")
+	}
+	nId := len(p.Todos) + 1
+	nTodo := newTodo(content, urgency, nId)
+	p.Todos = append(p.Todos, *nTodo)
+	return nil
+}
+
+func (p *Project) DelTodo(id int) error {
+	index, err := p.checkTodoId(id)
+	if err != nil {
+		return err
+	}
+    p.Todos[index].Done = true
+    return nil
+}
+
+func (p *Project) ChangeUrgency(id int, urgency int8) error {
+	index, err := p.checkTodoId(id)
+	if err != nil {
+		return err
+	}
+    p.Todos[index].Urgency = urgency
+	return nil
+}
+
+func (p *Project) ListTodos(done bool) string {
+	sort.Slice(p.Todos, func(i, j int) bool { return p.Todos[i].Urgency > p.Todos[j].Urgency })
+	var result string
+	for _, i := range p.Todos {
+        if i.Done == done {
+                result += i.formatTodo()
+        }
+	}
+	return result
 }
 
 func readFile(fpath string, project *Project) error {
