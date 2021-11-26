@@ -14,7 +14,7 @@ var envCommands = map[string]bool{
 	"ls":      true,
 	"rm":      true,
 	"lstodo":  true,
-    "lsdone": true,
+	"lsdone":  true,
 	"addtodo": true,
 	"deltodo": true,
 	"churg":   true,
@@ -39,9 +39,9 @@ func parseEnvCommand(u *UserInput) {
 		case "lstodo":
 			todos := project.ListTodos(false)
 			fmt.Printf("%s", todos)
-        case "lsdone":
-            todos := project.ListTodos(true)
-            fmt.Printf("%s", todos)
+		case "lsdone":
+			todos := project.ListTodos(true)
+			fmt.Printf("%s", todos)
 		case "addtodo":
 			urg, err := strconv.Atoi(u.Arg)
 			if err != nil {
@@ -49,10 +49,10 @@ func parseEnvCommand(u *UserInput) {
 			}
 			urgency := int8(urg)
 			err = project.AddTodo(u.Name, urgency)
-            if err != nil {
-                    log.Fatalf("Could not add todo.\n%v", err)
-            }
-            project.ToFile(env.WorkDir)
+			if err != nil {
+				log.Fatalf("Could not add todo.\n%v", err)
+			}
+			project.ToFile(env.WorkDir)
 		case "deltodo":
 			id, err := strconv.Atoi(u.Name)
 			if err != nil {
@@ -62,8 +62,8 @@ func parseEnvCommand(u *UserInput) {
 			if err != nil {
 				log.Fatalf("Could not delete todo with id %d\n%v", id, err)
 			}
-            fmt.Printf("%v", project.Todos)
-            project.ToFile(env.WorkDir)
+			fmt.Printf("%v", project.Todos)
+			project.ToFile(env.WorkDir)
 		case "churg":
 			id, err := strconv.Atoi(u.Name)
 			if err != nil {
@@ -78,7 +78,7 @@ func parseEnvCommand(u *UserInput) {
 			if err != nil {
 				log.Fatalf("Could not change urgency for id %d to %s", id, u.Arg)
 			}
-            project.ToFile(env.WorkDir)
+			project.ToFile(env.WorkDir)
 		}
 	} else {
 		log.Fatal("Failed to get current working directory")
@@ -92,7 +92,7 @@ func (u *UserInput) Parse() {
 	} else {
 		switch u.Cmd {
 		case "help":
-			helpCmd()
+			helpCmdParser(u.Name)
 		case "init":
 			initParser(u)
 		default:

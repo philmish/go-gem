@@ -25,11 +25,11 @@ func TestProject(t *testing.T) {
 	project.Name = "TestProject"
 	project.Env.WorkDir = p
 	project.AddTodo("Project Test Todo", 5)
-    project.DelTodo(1)
+	project.DelTodo(1)
 
-    if ! project.Todos[0].Done{
-            t.Error("Tried to delete todo but failed.")
-    }
+	if !project.Todos[0].Done {
+		t.Error("Tried to delete todo but failed.")
+	}
 
 	var env = project.Env
 	env.Add("hello", "echo", []string{"Hello World"})

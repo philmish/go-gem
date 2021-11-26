@@ -16,11 +16,21 @@ func newProject(name string, e *environment.Environment) *config.Project {
 
 }
 
+func addGemAliases(e *environment.Environment) {
+        e.Add("gemls", "gogem", []string{"-c", "ls"})
+        e.Add("gemtodo", "gogem", []string{"-c", "lstodo"})
+        e.Add("gemdone", "gogem", []string{"-c", "lsdone"})
+        e.Add("gemdo", "gogem", []string{"-c", "do", "-n"})
+        e.Add("gemadd", "gogem", []string{"-c", "add", "-n"})
+        e.Add("gemrm", "gogem", []string{"-c", "rm", "-n"})
+}
+
 func defaultEnv(name string, aliasing bool) {
 
 	if p, err := os.Getwd(); err == nil {
 		newEnv := environment.NewEnv(p)
 		newEnv.Alias = aliasing
+        addGemAliases(newEnv)
 		np := newProject(name, newEnv)
 		np.ToFile(p)
 		log.Printf("%s created successfully.\n", name)
@@ -44,12 +54,15 @@ func createEnv(envtype string, name string, aliasing bool) {
 	switch envtype {
 	case "go":
 		newEnv := templates.DefaultGoenv(p, aliasing)
+        addGemAliases(newEnv)
 		writeEnv(name, newEnv)
 	case "py":
 		newEnv := templates.DefaultPyenv(p, aliasing)
+        addGemAliases(newEnv)
 		writeEnv(name, newEnv)
 	case "node":
 		newEnv := templates.DefaultNodeEnv(p, aliasing)
+        addGemAliases(newEnv)
 		writeEnv(name, newEnv)
 	default:
 		defaultEnv(name, aliasing)

@@ -24,7 +24,7 @@ func newTodo(content string, urgency int8, id int) *Todo {
 }
 
 func (t *Todo) formatTodo() string {
-        return fmt.Sprintf("(%d)%s\nID: %d\n\n", t.Urgency, t.Content, t.Id)
+	return fmt.Sprintf("(%d)%s\nID: %d\n\n", t.Urgency, t.Content, t.Id)
 }
 
 type Project struct {
@@ -48,7 +48,7 @@ func (p *Project) checkTodoId(id int) (int, error) {
 			return i, nil
 		}
 	}
-	return 0, errors.New("No todo found for id") 
+	return 0, errors.New("No todo found for id")
 }
 
 func (p *Project) checkForTodoContent(content string) *Todo {
@@ -76,8 +76,8 @@ func (p *Project) DelTodo(id int) error {
 	if err != nil {
 		return err
 	}
-    p.Todos[index].Done = true
-    return nil
+	p.Todos[index].Done = true
+	return nil
 }
 
 func (p *Project) ChangeUrgency(id int, urgency int8) error {
@@ -85,7 +85,7 @@ func (p *Project) ChangeUrgency(id int, urgency int8) error {
 	if err != nil {
 		return err
 	}
-    p.Todos[index].Urgency = urgency
+	p.Todos[index].Urgency = urgency
 	return nil
 }
 
@@ -93,9 +93,9 @@ func (p *Project) ListTodos(done bool) string {
 	sort.Slice(p.Todos, func(i, j int) bool { return p.Todos[i].Urgency > p.Todos[j].Urgency })
 	var result string
 	for _, i := range p.Todos {
-        if i.Done == done {
-                result += i.formatTodo()
-        }
+		if i.Done == done {
+			result += i.formatTodo()
+		}
 	}
 	return result
 }
