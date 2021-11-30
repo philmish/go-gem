@@ -52,7 +52,7 @@ func TestTodo(t *testing.T) {
 	project.Name = "TestProject"
 	err := project.AddTodo("Test the todo function", 10)
 	checkErr(err, t)
-	todos := project.ListTodos()
+	todos := project.ListTodos(false)
 	fmt.Printf(todos)
 	err = project.ChangeUrgency(1, 12)
 	checkErr(err, t)
