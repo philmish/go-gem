@@ -3,9 +3,11 @@ name: tests
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_requests:
-    branches: [ master ]
+    branches:
+      - master
 
 
 jobs:
