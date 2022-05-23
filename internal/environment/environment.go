@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-
 type Environment struct {
 	WorkDir string             `json:"workdir"`
 	Cmds    map[string]Command `json:"cmds"`

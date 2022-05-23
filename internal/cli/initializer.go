@@ -51,7 +51,7 @@ func createEnv(envtype string, name string, aliasing bool) {
 	if err != nil {
 		log.Fatalf("Failed to load working directory\nError:\n%v", err)
 	}
-	env, err := templates.CreateTemplate(p, name, aliasing)
+	env, err := templates.CreateTemplate(envtype, p, aliasing)
 	if err != nil {
 		log.Printf("Can't find template for %s. Creating default ...", envtype)
 		defaultEnv(name, aliasing)

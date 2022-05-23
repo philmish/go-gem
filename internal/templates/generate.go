@@ -2,6 +2,8 @@ package templates
 
 import (
 	"errors"
+	"log"
+
 	"github.com/philmish/go-gem/internal/environment"
 )
 
@@ -45,9 +47,11 @@ var defaultMap = map[string][]aliasTemplate{
 }
 
 func CreateTemplate(name, workdir string, aliasing bool) (*environment.Environment, error) {
+	log.Printf("Length: %v", len(defaultMap[name]))
 	if template, ok := defaultMap[name]; ok {
 		return generate(workdir, aliasing, template), nil
 	} else {
+		log.Println("CreateTemplate failed")
 		return nil, errors.New("Name does not exist")
 	}
 }
