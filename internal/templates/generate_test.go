@@ -1,7 +1,6 @@
 package templates_test
 
 import (
-	"github.com/philmish/go-gem/internal/environment"
 	"github.com/philmish/go-gem/internal/templates"
 	"testing"
 )
