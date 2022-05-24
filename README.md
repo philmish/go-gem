@@ -26,6 +26,21 @@ go build -o ~/.local/bin/gogem cmd/main.go
 
 You can now call go-gem with the gogem command from you command line.
 
+## Default Environments
+
+The init command offers a option to specify a default environment to create.
+These templates exist for:
+
+
+```
+node
+vue
+go
+python
+
+```
+These keys can be used to create as template names for the init command.
+
 ## Usage
 
 ```
