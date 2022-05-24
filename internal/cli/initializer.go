@@ -59,24 +59,6 @@ func createEnv(envtype string, name string, aliasing bool) {
 		addGemAliases(env)
 		writeEnv(name, env)
 	}
-	/*
-		  switch envtype {
-			case "go":
-				newEnv := templates.DefaultGoenv(p, aliasing)
-				addGemAliases(newEnv)
-				writeEnv(name, newEnv)
-			case "py":
-				newEnv := templates.DefaultPyenv(p, aliasing)
-				addGemAliases(newEnv)
-				writeEnv(name, newEnv)
-			case "node":
-				newEnv := templates.DefaultNodeEnv(p, aliasing)
-				addGemAliases(newEnv)
-				writeEnv(name, newEnv)
-			default:
-				defaultEnv(name, aliasing)
-			}
-	*/
 }
 
 func initParser(i *UserInput) {
