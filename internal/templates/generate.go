@@ -2,9 +2,8 @@ package templates
 
 import (
 	"errors"
-	"log"
-
 	"github.com/philmish/go-gem/internal/environment"
+	"log"
 )
 
 type aliasTemplate struct {
@@ -13,13 +12,22 @@ type aliasTemplate struct {
 	args []string
 }
 
+func addTemplateCmd(e *environment.Environment, template aliasTemplate) {
+	e.Add(template.name, template.cmd, template.args)
+}
+
+func addTemplateList(e *environment.Environment, templates []aliasTemplate) {
+	for _, template := range templates {
+		addTemplateCmd(e, template)
+	}
+}
+
 func generate(workdir string, aliasing bool, templates []aliasTemplate) *environment.Environment {
 	var newEnv = environment.NewEnv(workdir)
 	newEnv.Alias = aliasing
-
-	for _, template := range templates {
-		newEnv.Add(template.name, template.cmd, template.args)
-	}
+	defs := append(gogemDefaults, gitDefaults...)
+	templates = append(templates, defs...)
+	addTemplateList(newEnv, templates)
 	return newEnv
 }
 
@@ -46,12 +54,33 @@ var defaultMap = map[string][]aliasTemplate{
 	},
 }
 
+var gogemDefaults = []aliasTemplate{
+	{"gemls", "gogem", []string{"-c", "ls"}},
+	{"gemtodo", "gogem", []string{"-c", "lstodo"}},
+	{"gemdone", "gogem", []string{"-c", "lsdone"}},
+	{"gemdo", "gogem", []string{"-c", "do", "-n"}},
+	{"gemadd", "gogem", []string{"-c", "add", "-n"}},
+	{"gemrm", "gogem", []string{"-c", "rm", "-n"}},
+}
+
+var gitDefaults = []aliasTemplate{
+	{"ga", "git", []string{"add", "."}},
+	{"gs", "git", []string{"status"}},
+	{"gc", "git", []string{"commit", "-m"}},
+	{"push", "git", []string{"push"}},
+}
+
 func CreateTemplate(name, workdir string, aliasing bool) (*environment.Environment, error) {
-	log.Printf("Length: %v", len(defaultMap[name]))
 	if template, ok := defaultMap[name]; ok {
 		return generate(workdir, aliasing, template), nil
 	} else {
 		log.Println("CreateTemplate failed")
 		return nil, errors.New("Name does not exist")
 	}
+}
+
+func CreateDefault(workdir string, aliasing bool) *environment.Environment {
+	temps := []aliasTemplate{}
+	return generate(workdir, aliasing, temps)
+
 }

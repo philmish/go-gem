@@ -11,7 +11,7 @@ func checkErr(err error, t *testing.T) {
 	}
 }
 
-func TestDefaults(t *testing.T) {
+func TestTemplates(t *testing.T) {
 	names := []string{"go", "node", "vue"}
 	for _, name := range names {
 		_, err := templates.CreateTemplate(name, "/home/user", true)
