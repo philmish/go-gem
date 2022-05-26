@@ -24,7 +24,7 @@ func defaultProject(name string, aliasing bool) {
 		np.ToFile(p)
 		log.Printf("%s created successfully.\n", name)
 	} else {
-		log.Fatal("Something went wrong when trying to read current working directory.")
+		log.Fatal("Failed to read current working directory.")
 	}
 }
 
@@ -35,14 +35,14 @@ func writeEnv(name string, env *environment.Environment) {
 	log.Printf("%s created successfully.", name)
 }
 
-func createEnv(envtype string, name string, aliasing bool) {
+func createProject(envtype, name string, aliasing bool) {
 	p, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Failed to load working directory\nError:\n%v", err)
 	}
 	env, err := templates.CreateTemplate(envtype, p, aliasing)
 	if err != nil {
-		log.Printf("Can't find template for %s. Creating default ...", envtype)
+		log.Printf("Can't find template for %s\n. Creating default ...\n", envtype)
 		defaultProject(name, aliasing)
 	} else {
 		writeEnv(name, env)
@@ -50,5 +50,5 @@ func createEnv(envtype string, name string, aliasing bool) {
 }
 
 func initParser(i *UserInput) {
-	createEnv(i.Name, i.Arg, i.Alias)
+	createProject(i.Name, i.Arg, i.Alias)
 }

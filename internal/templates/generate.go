@@ -51,6 +51,8 @@ var defaultMap = map[string][]aliasTemplate{
 		aliasTemplate{"test_all", "go", []string{"test", "-v", "./..."}},
 		aliasTemplate{"tidy", "go", []string{"mod", "tidy"}},
 		aliasTemplate{"fmt", "go", []string{"fmt", "./..."}},
+		aliasTemplate{"run", "go", []string{"run"}},
+		aliasTemplate{"build", "go", []string{"build"}},
 	},
 }
 
@@ -61,6 +63,8 @@ var gogemDefaults = []aliasTemplate{
 	{"gemdo", "gogem", []string{"-c", "do", "-n"}},
 	{"gemadd", "gogem", []string{"-c", "add", "-n"}},
 	{"gemrm", "gogem", []string{"-c", "rm", "-n"}},
+	{"newTodo", "gogem", []string{"-c", "addtodo", "-n"}},
+	{"delTodo", "gogem", []string{"-c", "deltodo", "-n"}},
 }
 
 var gitDefaults = []aliasTemplate{
@@ -68,6 +72,7 @@ var gitDefaults = []aliasTemplate{
 	{"gs", "git", []string{"status"}},
 	{"gc", "git", []string{"commit", "-m"}},
 	{"push", "git", []string{"push"}},
+	{"glog", "git", []string{"log", "--graph", "--oneline", "--decorate"}},
 }
 
 func CreateTemplate(name, workdir string, aliasing bool) (*environment.Environment, error) {
@@ -82,5 +87,4 @@ func CreateTemplate(name, workdir string, aliasing bool) (*environment.Environme
 func CreateDefault(workdir string, aliasing bool) *environment.Environment {
 	temps := []aliasTemplate{}
 	return generate(workdir, aliasing, temps)
-
 }
