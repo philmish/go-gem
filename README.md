@@ -18,10 +18,10 @@ Clone the repo
 git clone https://github.com/philmish/go-gem
 ```
 
-cd into the go-gem directory and build go-gem in your .local/bin
+cd into the go-gem directory and build go-gem in your .local/bin by using the Makefile
 ```
 cd go-gem
-go build -o ~/.local/bin/gogem cmd/main.go
+make build
 ```
 
 You can now call go-gem with the gogem command from you command line.
