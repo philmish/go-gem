@@ -62,7 +62,6 @@ func parseEnvCommand(u *UserInput) {
 			if err != nil {
 				log.Fatalf("Could not delete todo with id %d\n%v", id, err)
 			}
-			fmt.Printf("%v", project.Todos)
 			project.ToFile(env.WorkDir)
 		case "churg":
 			id, err := strconv.Atoi(u.Name)
