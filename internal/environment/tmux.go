@@ -16,7 +16,7 @@ type Window struct {
 func (w *Window) createCmd(sName string) string {
 	var cmd string
 	if w.Num == 1 {
-		cmd = fmt.Sprintf("tmux rename-window -t %s:%d -n '%s'", sName, w.Num, w.Name)
+		cmd = fmt.Sprintf("tmux rename-window -t %s:%d '%s'", sName, w.Num, w.Name)
 	} else {
 		cmd = fmt.Sprintf("tmux new-window -t %s:%d -n '%s'", sName, w.Num, w.Name)
 	}

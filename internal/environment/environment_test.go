@@ -56,11 +56,15 @@ func TestTmux(t *testing.T) {
 	conf := environment.NewConfig("testConf", sessions)
 	commands := conf.Generate()
 
-	testVals := []string{"#!/usr/bin/bash", "tmux new -d -s testSesh1", "tmux rename-window -t testSesh1:1 -n 'testWdw1'\ntmux send-keys -t testSesh1:1 'nvim'"}
+	testVals := []string{"#!/usr/bin/bash", "tmux new -d -s testSesh1", "tmux rename-window -t testSesh1:1 'testWdw1'\ntmux send-keys -t testSesh1:1 'nvim'"}
 	for _, tVal := range testVals {
 		exists := contains(tVal, commands)
 		if !exists {
 			t.Errorf("Commands missing: %s\n", tVal)
 		}
 	}
+	p, err := os.Getwd()
+	checkErr(err, t)
+	err = conf.Write(p)
+	checkErr(err, t)
 }
