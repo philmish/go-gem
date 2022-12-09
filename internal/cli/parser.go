@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"github.com/philmish/go-gem/internal/config"
+	"github.com/philmish/go-gem/internal/shell"
 	"log"
 	"os"
 	"strconv"
@@ -80,7 +81,7 @@ func parseEnvCommand(u *UserInput) {
 			}
 			project.ToFile(env.WorkDir)
         case "shell":
-            RunShell()
+            shell.RunShell()
 		}
 	} else {
 		log.Fatal("Failed to get current working directory")

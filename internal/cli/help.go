@@ -10,6 +10,8 @@ func helpCmdParser(command string) {
 		helpLs()
 	case "add":
 		helpAdd()
+    case "shell":
+        helpShell()
 	default:
 		helpCmd()
 	}
@@ -23,7 +25,7 @@ func helpCmd() {
 	fmt.Println("")
 
 	fmt.Println("Usage:")
-	fmt.Println("\tgogem -c help [command]")
+	fmt.Println("\tgogem -c help [-n <command>]")
 	fmt.Println("\tgogem -c init [-n <template name>] [--alias]")
 	fmt.Println("\tgogem -c ls")
 	fmt.Println("\tgogem -c add -n <cmd alias> -a <shell cmd> [<args>...]")
@@ -34,7 +36,8 @@ func helpCmd() {
 	fmt.Println("\tgogem -c addtodo -n <todo content> -a <todo urgency>")
 	fmt.Println("\tgogem -c deltodo -n <todo id>")
 	fmt.Println("\tgogem -c churg -n <todo id> -a <new urgency>")
-	fmt.Println("")
+	fmt.Println("\tgogem -c churg -n <todo id> -a <new urgency>")
+	fmt.Println("\tgogem -c shell")
 
 	fmt.Println("Options:")
 	fmt.Println("\t--alias\t If set go-gem creates a .gem_aliases file with aliases for all commands.")
@@ -97,4 +100,13 @@ func helpRm() {
 
 	fmt.Println("Usage:")
 	fmt.Println("\tgogem -c rm -n <alias>")
+}
+
+func helpShell() {
+	fmt.Println("-------------------- SHELL --------------------")
+	fmt.Println("The shell command starts and interactive shell. This shell will be able to call all commands you configured in gogem.")
+	fmt.Print("")
+
+	fmt.Println("Usage:")
+	fmt.Println("\tgogem -c shell")
 }
