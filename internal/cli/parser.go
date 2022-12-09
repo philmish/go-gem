@@ -18,6 +18,7 @@ var envCommands = map[string]bool{
 	"addtodo": true,
 	"deltodo": true,
 	"churg":   true,
+    "shell":   true,
 }
 
 func parseEnvCommand(u *UserInput) {
@@ -78,6 +79,8 @@ func parseEnvCommand(u *UserInput) {
 				log.Fatalf("Could not change urgency for id %d to %s", id, u.Arg)
 			}
 			project.ToFile(env.WorkDir)
+        case "shell":
+            RunShell()
 		}
 	} else {
 		log.Fatal("Failed to get current working directory")
