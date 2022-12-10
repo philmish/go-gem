@@ -2,17 +2,13 @@ package cli
 
 import (
 	"flag"
+	"fmt"
+
+	"github.com/philmish/go-gem/internal/config"
+	"github.com/philmish/go-gem/internal/parser"
 )
 
-type UserInput struct {
-	Cmd     string
-	Name    string
-	Arg     string
-	Alias   bool
-	AddArgs []string
-}
-
-func GetInput() *UserInput {
+func GetInput() *parser.UserInput {
 	var (
 		cmd   string
 		name  string
@@ -26,6 +22,22 @@ func GetInput() *UserInput {
 	flag.BoolVar(&alias, "alias", false, "create an alias file.")
 	flag.Parse()
 
-	var data = &UserInput{cmd, name, arg, alias, flag.Args()}
+	var data = &parser.UserInput{Cmd: cmd, Name: name, Arg: arg, Alias: alias}
 	return data
+}
+
+func Parse(p *config.Project, u *parser.UserInput) {
+	if ok, _ := parser.EnvCommands[u.Cmd]; ok {
+		parser.ParseEnvCommand(p, u)
+
+	} else {
+		switch u.Cmd {
+		case "help":
+			helpCmdParser(u.Name)
+		case "init":
+			initParser(u)
+		default:
+			fmt.Printf("Unknown command: %s", u.Cmd)
+		}
+	}
 }

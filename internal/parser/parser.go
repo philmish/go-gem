@@ -1,15 +1,15 @@
-package cli
+package parser
 
 import (
-	"fmt"
-	"github.com/philmish/go-gem/internal/config"
-	"github.com/philmish/go-gem/internal/shell"
-	"log"
-	"os"
-	"strconv"
+    "log"
+    "os"
+    "fmt"
+    "strconv"
+    "github.com/philmish/go-gem/internal/config"
+    
 )
 
-var envCommands = map[string]bool{
+var EnvCommands = map[string]bool{
 	"do":      true,
 	"add":     true,
 	"ls":      true,
@@ -22,9 +22,8 @@ var envCommands = map[string]bool{
     "shell":   true,
 }
 
-func parseEnvCommand(u *UserInput) {
-	if p, err := os.Getwd(); err == nil {
-		project := config.FromFile(p)
+func ParseEnvCommand(project *config.Project, u *UserInput) {
+	if _, err := os.Getwd(); err == nil {
 		var env = &project.Env
 
 		switch u.Cmd {
@@ -80,26 +79,8 @@ func parseEnvCommand(u *UserInput) {
 				log.Fatalf("Could not change urgency for id %d to %s", id, u.Arg)
 			}
 			project.ToFile(env.WorkDir)
-        case "shell":
-            shell.RunShell()
 		}
 	} else {
 		log.Fatal("Failed to get current working directory")
-	}
-}
-
-func (u *UserInput) Parse() {
-	if ok, _ := envCommands[u.Cmd]; ok {
-		parseEnvCommand(u)
-
-	} else {
-		switch u.Cmd {
-		case "help":
-			helpCmdParser(u.Name)
-		case "init":
-			initParser(u)
-		default:
-			fmt.Printf("Unknown command: %s", u.Cmd)
-		}
 	}
 }

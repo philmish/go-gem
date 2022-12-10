@@ -1,11 +1,13 @@
 package cli
 
 import (
-	"github.com/philmish/go-gem/internal/config"
-	"github.com/philmish/go-gem/internal/environment"
-	"github.com/philmish/go-gem/internal/templates"
 	"log"
 	"os"
+
+	"github.com/philmish/go-gem/internal/config"
+	"github.com/philmish/go-gem/internal/environment"
+	"github.com/philmish/go-gem/internal/parser"
+	"github.com/philmish/go-gem/internal/templates"
 )
 
 func newProject(name string, e *environment.Environment) *config.Project {
@@ -49,6 +51,6 @@ func createProject(envtype, name string, aliasing bool) {
 	}
 }
 
-func initParser(i *UserInput) {
+func initParser(i *parser.UserInput) {
 	createProject(i.Name, i.Arg, i.Alias)
 }

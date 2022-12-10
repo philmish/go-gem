@@ -29,6 +29,19 @@ func NewProject() *Project {
 	}
 }
 
+func WorkDirHasConf() (bool, error) {
+    files, err := ioutil.ReadDir("./")
+    if err != nil {
+        return false, err
+    }
+    for _, f := range files {
+        if f.Name() == "gem_config.json" {
+            return true, nil
+        }
+    }
+    return false, nil
+}
+
 func (p *Project) checkTodoId(id int) (int, error) {
 	for i, item := range p.Todos {
 		if item.Id == id {
